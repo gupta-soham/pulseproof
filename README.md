@@ -1,8 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pulse Proof
+
+A real-time smart contract vulnerability monitoring dashboard built with Next.js. Monitor your smart contracts for security vulnerabilities, view detailed proof-of-concept (PoC) code, and get instant alerts for critical issues.
+
+## Features
+
+- **Real-time Monitoring**: Continuous monitoring of smart contract vulnerabilities
+- **Interactive PoC Viewer**: View sample proof-of-concept code for vulnerabilities in an interactive dialog
+- **Priority-based Alerts**: Critical, high, medium, and low priority vulnerability classification
+- **Responsive Dashboard**: Mobile-friendly interface with detailed vulnerability tables
+- **Contract Management**: Add, switch between, and manage multiple contract addresses
+- **Advanced Filtering**: Filter vulnerabilities by priority, category, date range, and contract hash
+- **Export Capabilities**: Export vulnerability data for further analysis
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **Animations**: Framer Motion for smooth interactions
+- **Icons**: Lucide React
+- **TypeScript**: Full type safety throughout the application
+- **Build Tool**: Turbopack for fast development builds
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd pulse-proof
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -14,23 +61,83 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+pulse-proof/
+├── app/                    # Next.js app directory
+│   ├── dashboard/         # Dashboard pages
+│   ├── onboarding/        # Onboarding flow
+│   └── globals.css        # Global styles
+├── components/            # React components
+│   ├── dashboard/         # Dashboard-specific components
+│   ├── ui/               # Reusable UI components
+│   └── navigation/        # Navigation components
+├── lib/                   # Utility functions and services
+├── types/                 # TypeScript type definitions
+└── public/               # Static assets
+```
 
-## Learn More
+## Key Components
 
-To learn more about Next.js, take a look at the following resources:
+### Vulnerability Table
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Sortable columns for all vulnerability data
+- Mobile-responsive card layout
+- Integrated PoC dialog viewer
+- Real-time status updates
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### PoC Dialog
 
-## Deploy on Vercel
+- Interactive proof-of-concept code viewer
+- Copy-to-clipboard functionality
+- Sample code for different vulnerability types
+- External link to full reports
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Critical Notifications
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Animated notification stack
+- Real-time alerts for critical vulnerabilities
+- Quick action buttons (acknowledge, dismiss)
+- Expandable notification details
+
+## Development
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+### Running Tests
+
+```bash
+npm run test
+```
+
+### Linting
+
+```bash
+npm run lint
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Icons from [Lucide](https://lucide.dev/)
+- Animations powered by [Framer Motion](https://www.framer.com/motion/)

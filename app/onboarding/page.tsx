@@ -87,14 +87,6 @@ export default function OnboardingPage() {
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <div className="text-center mt-16 text-sm text-muted-foreground">
-          <p>
-            Secure your smart contracts with real-time monitoring and instant
-            alerts
-          </p>
-        </div>
       </div>
     </div>
   );
