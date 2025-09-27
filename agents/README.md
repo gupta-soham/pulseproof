@@ -18,3 +18,11 @@ External Client <br>
 - Master Orchestrator: Coordinates the flow and synthesizes final results
 - Event Analyzer: Takes raw events → Preprocesses → Detects patterns → Sends structured data
 - Risk Assessor: Takes structured data → Analyzes risk → Generates recommendations → Sends risk assessment
+
+
+## How to run
+
+```$ cd /agents/risk_assessor && python3.12 -m venv venv```
+
+```$ source venv/bin/activate && pip install -r requirements.txt && python phase2_risk_assessor.py```
+
