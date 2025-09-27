@@ -29,6 +29,8 @@
     "**/*.test.tsx",
     "src/test/**/*",
     "__tests__/**/*",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "backend/**/*",
+    "agents/**/*"
   ]
 }
