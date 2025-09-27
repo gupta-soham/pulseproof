@@ -3,6 +3,7 @@ import logging
 import requests
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
+import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -77,18 +78,25 @@ class SubstreamsWebhookHandler(BaseHTTPRequestHandler):
                     logger.info(f"  Contract Address: {event.get('contractAddress', 'N/A')}")
                     logger.info(f"  Event Type: {event.get('eventType', 'N/A')}")
                     logger.info(f"  Event Signature: {event.get('eventSignature', 'N/A')}")
-                
-                # Call the phase2_orchestrator analyze-events handler
-                self.call_phase2_orchestrator(events)
+                    # Call the phase2_orchestrator analyze-events handler
+                    self.call_phase2_orchestrator(event)
+                    # Add a jitter of 5s between calls if you have multiple events
+                    time.sleep(5)
         
         logger.info("=== End Webhook Data ===")
 
-    def call_phase2_orchestrator(self, events):
+    def call_phase2_orchestrator(self, event):
         """Call the analyze-events handler in phase2_orchestrator.py"""
         try:
             # Prepare the payload for the phase2 orchestrator
             orchestrator_payload = {
-                "events": events
+                "transactionHash": event.get('transactionHash', 'N/A'),
+                "eventType": event.get('eventType', 'N/A'),
+                "blockNumber": event.get('blockNumber', 'N/A'),
+                "logIndex": event.get('logIndex', 'N/A'),
+                "contractAddress": event.get('contractAddress', 'N/A'),
+                "eventSignature": event.get('eventSignature', 'N/A'),
+                "metadata": event.get('metadata', 'N/A')
             }
             
             # Make HTTP request to phase2_orchestrator
