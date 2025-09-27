@@ -9,16 +9,22 @@
         "type": "bytes32"
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "pocType",
-        "type": "string"
-      },
-      {
         "indexed": true,
         "internalType": "address",
         "name": "target",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint16",
+        "name": "attackedVictimBlockNumber",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "pocType",
+        "type": "string"
       },
       {
         "indexed": false,
@@ -29,7 +35,13 @@
       {
         "indexed": false,
         "internalType": "string",
-        "name": "hederaTx",
+        "name": "severity",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "summary",
         "type": "string"
       }
     ],
@@ -39,10 +51,16 @@
   {
     "inputs": [
       { "internalType": "bytes32", "name": "pocHash", "type": "bytes32" },
-      { "internalType": "string", "name": "pocType", "type": "string" },
       { "internalType": "address", "name": "target", "type": "address" },
+      {
+        "internalType": "uint16",
+        "name": "attackedVictimBlockNumber",
+        "type": "uint16"
+      },
+      { "internalType": "string", "name": "pocType", "type": "string" },
       { "internalType": "string", "name": "metadataURI", "type": "string" },
-      { "internalType": "string", "name": "hederaTx", "type": "string" }
+      { "internalType": "string", "name": "severity", "type": "string" },
+      { "internalType": "string", "name": "summary", "type": "string" }
     ],
     "name": "registerPoC",
     "outputs": [],

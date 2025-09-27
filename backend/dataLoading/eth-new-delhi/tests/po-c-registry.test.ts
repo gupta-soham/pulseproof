@@ -18,18 +18,22 @@ import { createVerifiedPoCEvent } from "./po-c-registry-utils"
 describe("Describe entity assertions", () => {
   beforeAll(() => {
     let pocHash = Bytes.fromI32(1234567890)
-    let pocType = "Example string value"
     let target = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
+    let attackedVictimBlockNumber = 123
+    let pocType = "Example string value"
     let metadataURI = "Example string value"
-    let hederaTx = "Example string value"
+    let severity = "Example string value"
+    let summary = "Example string value"
     let newVerifiedPoCEvent = createVerifiedPoCEvent(
       pocHash,
-      pocType,
       target,
+      attackedVictimBlockNumber,
+      pocType,
       metadataURI,
-      hederaTx
+      severity,
+      summary
     )
     handleVerifiedPoC(newVerifiedPoCEvent)
   })
@@ -54,14 +58,20 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "VerifiedPoC",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "pocType",
-      "Example string value"
+      "target",
+      "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
       "VerifiedPoC",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "target",
-      "0x0000000000000000000000000000000000000001"
+      "attackedVictimBlockNumber",
+      "123"
+    )
+    assert.fieldEquals(
+      "VerifiedPoC",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "pocType",
+      "Example string value"
     )
     assert.fieldEquals(
       "VerifiedPoC",
@@ -72,7 +82,13 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "VerifiedPoC",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "hederaTx",
+      "severity",
+      "Example string value"
+    )
+    assert.fieldEquals(
+      "VerifiedPoC",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "summary",
       "Example string value"
     )
 

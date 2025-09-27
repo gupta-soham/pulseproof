@@ -1,8 +1,8 @@
 {
   "sepolia": {
     "PoCRegistry": {
-      "address": "0x3aD041a0755F50b09D8A49fE61438C46338B128D",
-      "startBlock": 9287936
+      "address": "0x0a873A9952095D3F5A9D6f88E271De83e312EB23",
+      "startBlock": 9292960
     }
   }
 }

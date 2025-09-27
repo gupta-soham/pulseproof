@@ -1,10 +1,12 @@
 type VerifiedPoC @entity(immutable: true) {
   id: Bytes!
   pocHash: Bytes! # bytes32
-  pocType: String! # string
   target: Bytes! # address
+  attackedVictimBlockNumber: Int! # uint16
+  pocType: String! # string
   metadataURI: String! # string
-  hederaTx: String! # string
+  severity: String! # string
+  summary: String! # string
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

@@ -8,9 +8,9 @@ dataSources:
     name: PoCRegistry
     network: sepolia
     source:
-      address: "0x3aD041a0755F50b09D8A49fE61438C46338B128D"
+      address: "0x0a873A9952095D3F5A9D6f88E271De83e312EB23"
       abi: PoCRegistry
-      startBlock: 9287936
+      startBlock: 9292960
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -21,6 +21,6 @@ dataSources:
         - name: PoCRegistry
           file: ./abis/PoCRegistry.json
       eventHandlers:
-        - event: VerifiedPoC(indexed bytes32,string,indexed address,string,string)
+        - event: VerifiedPoC(indexed bytes32,indexed address,indexed uint16,string,string,string,string)
           handler: handleVerifiedPoC
       file: ./src/po-c-registry.ts

@@ -4,10 +4,12 @@ import { VerifiedPoC } from "../generated/PoCRegistry/PoCRegistry"
 
 export function createVerifiedPoCEvent(
   pocHash: Bytes,
-  pocType: string,
   target: Address,
+  attackedVictimBlockNumber: i32,
+  pocType: string,
   metadataURI: string,
-  hederaTx: string
+  severity: string,
+  summary: string
 ): VerifiedPoC {
   let verifiedPoCEvent = changetype<VerifiedPoC>(newMockEvent())
 
@@ -17,10 +19,18 @@ export function createVerifiedPoCEvent(
     new ethereum.EventParam("pocHash", ethereum.Value.fromFixedBytes(pocHash))
   )
   verifiedPoCEvent.parameters.push(
-    new ethereum.EventParam("pocType", ethereum.Value.fromString(pocType))
+    new ethereum.EventParam("target", ethereum.Value.fromAddress(target))
   )
   verifiedPoCEvent.parameters.push(
-    new ethereum.EventParam("target", ethereum.Value.fromAddress(target))
+    new ethereum.EventParam(
+      "attackedVictimBlockNumber",
+      ethereum.Value.fromUnsignedBigInt(
+        BigInt.fromI32(attackedVictimBlockNumber)
+      )
+    )
+  )
+  verifiedPoCEvent.parameters.push(
+    new ethereum.EventParam("pocType", ethereum.Value.fromString(pocType))
   )
   verifiedPoCEvent.parameters.push(
     new ethereum.EventParam(
@@ -29,7 +39,10 @@ export function createVerifiedPoCEvent(
     )
   )
   verifiedPoCEvent.parameters.push(
-    new ethereum.EventParam("hederaTx", ethereum.Value.fromString(hederaTx))
+    new ethereum.EventParam("severity", ethereum.Value.fromString(severity))
+  )
+  verifiedPoCEvent.parameters.push(
+    new ethereum.EventParam("summary", ethereum.Value.fromString(summary))
   )
 
   return verifiedPoCEvent

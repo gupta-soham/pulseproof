@@ -61,10 +61,12 @@ async function main() {
   try {
     const testTx = await pocRegistry.registerPoC(
       ethers.keccak256(ethers.toUtf8Bytes("test-poc-hash")),
-      "REENTRANCY",
       address,
+      17,
+      "FLASHLOAN",
       "ipfs://test-metadata-uri",
-      "0.0.123456-789"
+      "HIGH",
+      "This is a high risk alert"
     );
     
     await testTx.wait();
