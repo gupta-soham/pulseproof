@@ -1,0 +1,35 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_17-83970d537272b1834a04784863a28f091a2d5325",
+  "solcVersion": "0.8.17",
+  "solcLongVersion": "0.8.17+commit.8df45f5f",
+  "userSourceNameMap": {
+    "contracts/PoCRegistry.sol": "project/contracts/PoCRegistry.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "london",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/PoCRegistry.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.17;\n\ncontract PoCRegistry {\n    event VerifiedPoC(\n        bytes32 indexed pocHash,     // hash of PoC metadata (sha256)\n        address indexed target,      // exploited contract (if applicable)\n        uint256 indexed attackedVictimBlockNumber,\n        string pocType ,              // \"REENTRANCY\",\"FLASH_LOAN\",...\n        string metadataURI ,          // optional offchain metadata (IPFS/HTTP)\n        string severity,\n        string summary\n    );\n\n    function registerPoC(\n        bytes32 pocHash,\n        address target,\n        uint256 attackedVictimBlockNumber,\n        string calldata pocType,\n        string calldata metadataURI,\n        string calldata severity,\n        string calldata summary\n    ) external {\n        emit VerifiedPoC(\n            pocHash,\n            target,\n            attackedVictimBlockNumber,\n            pocType,\n            metadataURI,\n            severity,\n            summary\n        );\n    }\n}"
+      }
+    }
+  }
+}
