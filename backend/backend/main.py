@@ -54,7 +54,7 @@ def query_subgraph(contract_address):
 
         for item in response.json().get('data').get("verifiedPoCs"):
             print(item)
-            if item.get('target') != contract_address:
+            if item.get('target').lower() != contract_address.lower():
                 continue
             for key, value in item.items():
                 print(f"{key}: {value}")
