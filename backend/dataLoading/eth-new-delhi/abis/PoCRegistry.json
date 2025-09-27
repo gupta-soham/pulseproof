@@ -16,9 +16,9 @@
       },
       {
         "indexed": true,
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "attackedVictimBlockNumber",
-        "type": "uint16"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -53,9 +53,9 @@
       { "internalType": "bytes32", "name": "pocHash", "type": "bytes32" },
       { "internalType": "address", "name": "target", "type": "address" },
       {
-        "internalType": "uint16",
+        "internalType": "uint256",
         "name": "attackedVictimBlockNumber",
-        "type": "uint16"
+        "type": "uint256"
       },
       { "internalType": "string", "name": "pocType", "type": "string" },
       { "internalType": "string", "name": "metadataURI", "type": "string" },

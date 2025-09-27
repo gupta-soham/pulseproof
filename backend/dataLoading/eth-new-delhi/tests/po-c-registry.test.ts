@@ -6,7 +6,7 @@ import {
   beforeAll,
   afterAll
 } from "matchstick-as/assembly/index"
-import { Bytes, Address } from "@graphprotocol/graph-ts"
+import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
 import { VerifiedPoC } from "../generated/schema"
 import { VerifiedPoC as VerifiedPoCEvent } from "../generated/PoCRegistry/PoCRegistry"
 import { handleVerifiedPoC } from "../src/po-c-registry"
@@ -21,7 +21,7 @@ describe("Describe entity assertions", () => {
     let target = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
-    let attackedVictimBlockNumber = 123
+    let attackedVictimBlockNumber = BigInt.fromI32(234)
     let pocType = "Example string value"
     let metadataURI = "Example string value"
     let severity = "Example string value"
@@ -65,7 +65,7 @@ describe("Describe entity assertions", () => {
       "VerifiedPoC",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
       "attackedVictimBlockNumber",
-      "123"
+      "234"
     )
     assert.fieldEquals(
       "VerifiedPoC",

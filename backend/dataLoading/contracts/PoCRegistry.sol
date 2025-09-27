@@ -5,7 +5,7 @@ contract PoCRegistry {
     event VerifiedPoC(
         bytes32 indexed pocHash,     // hash of PoC metadata (sha256)
         address indexed target,      // exploited contract (if applicable)
-        uint16 indexed attackedVictimBlockNumber,
+        uint256 indexed attackedVictimBlockNumber,
         string pocType ,              // "REENTRANCY","FLASH_LOAN",...
         string metadataURI ,          // optional offchain metadata (IPFS/HTTP)
         string severity,
@@ -15,7 +15,7 @@ contract PoCRegistry {
     function registerPoC(
         bytes32 pocHash,
         address target,
-        uint16 attackedVictimBlockNumber,
+        uint256 attackedVictimBlockNumber,
         string calldata pocType,
         string calldata metadataURI,
         string calldata severity,

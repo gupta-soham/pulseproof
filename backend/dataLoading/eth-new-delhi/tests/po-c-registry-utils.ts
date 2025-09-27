@@ -1,11 +1,11 @@
 import { newMockEvent } from "matchstick-as"
-import { ethereum, Bytes, Address } from "@graphprotocol/graph-ts"
+import { ethereum, Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
 import { VerifiedPoC } from "../generated/PoCRegistry/PoCRegistry"
 
 export function createVerifiedPoCEvent(
   pocHash: Bytes,
   target: Address,
-  attackedVictimBlockNumber: i32,
+  attackedVictimBlockNumber: BigInt,
   pocType: string,
   metadataURI: string,
   severity: string,
@@ -24,9 +24,7 @@ export function createVerifiedPoCEvent(
   verifiedPoCEvent.parameters.push(
     new ethereum.EventParam(
       "attackedVictimBlockNumber",
-      ethereum.Value.fromUnsignedBigInt(
-        BigInt.fromI32(attackedVictimBlockNumber)
-      )
+      ethereum.Value.fromUnsignedBigInt(attackedVictimBlockNumber)
     )
   )
   verifiedPoCEvent.parameters.push(

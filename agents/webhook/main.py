@@ -92,7 +92,7 @@ class SubstreamsWebhookHandler(BaseHTTPRequestHandler):
             }
             
             # Make HTTP request to phase2_orchestrator
-            orchestrator_url = "http://localhost:8001/analyze-events"  # Adjust port as needed
+            orchestrator_url = "https://dinah-saleable-hyo.ngrok-free.dev/analyze-events"
             
             logger.info(f"Calling phase2_orchestrator at {orchestrator_url}")
             
