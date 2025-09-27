@@ -18,3 +18,11 @@ External Client <br>
 - Master Orchestrator: Coordinates the flow and synthesizes final results
 - Event Analyzer: Takes raw events → Preprocesses → Detects patterns → Sends structured data
 - Risk Assessor: Takes structured data → Analyzes risk → Generates recommendations → Sends risk assessment
+
+
+## How to run
+
+```$ cd /Users/admin/Downloads/PulseProof/agents && ./manage_phase2_agents.sh status```
+
+```$ cd /Users/admin/Downloads/PulseProof/agents && ./manage_phase2_agents.sh start```
+
