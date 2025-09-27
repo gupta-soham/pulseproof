@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@graphprotocol/grc-20": "^0.25.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.1",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "chai": "^6.0.1",
+    "dotenv": "^17.2.2",
+    "ethers": "^6.15.0",
+    "hardhat": "^3.0.6"
+  }
+}

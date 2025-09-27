@@ -1,0 +1,26 @@
+specVersion: v0.1.0
+package:
+  name: "pulseproof_substream"
+  version: v0.1.0
+
+protobuf:
+  files:
+    - candidate_events.proto
+  importPaths:
+    - ./proto
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: ./target/wasm32-unknown-unknown/release/substreams.wasm
+
+modules:
+  - name: map_candidate_events
+    kind: map
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:pulseproof.CandidateEvents
+    initialBlock: 0
+
+network: polygon

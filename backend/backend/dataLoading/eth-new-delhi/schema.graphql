@@ -1,0 +1,11 @@
+type VerifiedPoC @entity(immutable: true) {
+  id: Bytes!
+  pocHash: Bytes! # bytes32
+  pocType: String! # string
+  target: Bytes! # address
+  metadataURI: String! # string
+  hederaTx: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
