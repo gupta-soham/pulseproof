@@ -14,13 +14,13 @@ External Client <br>
     ↓ Final EventAnalysisResponse <br>
 External Client <br>
 
-## Master Orchestrator
+## Agents
 - Master Orchestrator: Coordinates the flow and synthesizes final results
 - Event Analyzer: Takes raw events → Preprocesses → Detects patterns → Sends structured data
 - Risk Assessor: Takes structured data → Analyzes risk → Generates recommendations → Sends risk assessment
 
 
-## How to run
+## How to run an agent
 
 ```$ cd /agents/risk_assessor && python3.12 -m venv venv```
 
