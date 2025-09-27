@@ -1,0 +1,21 @@
+# Red Agent Dependencies
+
+# Web framework and async support
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+
+# Web3 and blockchain interaction
+web3>=6.11.0
+
+# HTTP requests
+requests>=2.31.0
+
+# Template engine for PoC generation
+jinja2>=3.1.2
+
+# uAgents framework for multi-agent system
+uagents>=0.5.0
+
+# Testing framework (optional, for development)
+pytest>=7.4.0
