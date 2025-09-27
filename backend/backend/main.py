@@ -20,12 +20,15 @@ def query_subgraph(contract_address):
         query = {
             "query": f"""
             {{
-                verifiedPoCs(first: 5, where: {{target: "{contract_address}"}}) {{
+                verifiedPoCs(first: 10, where: {{target: "{contract_address}"}}) {{
                     id
                     pocHash
                     pocType
                     target
                     blockTimestamp
+                    metadataURI
+                    severity
+                    summary
                 }}
             }}
             """,
@@ -56,16 +59,12 @@ def query_subgraph(contract_address):
             for key, value in item.items():
                 print(f"{key}: {value}")
                 returnResponse[key] = value
-            returnResponse['pocSummary'] = "Some hardcoded summary for now"
-            returnResponse['issueName'] = "Some hardcoded issue name for now"
             if item.get('blockTimestamp'):
                 timestamp = int(item.get('blockTimestamp'))
                 dt_object = datetime.datetime.fromtimestamp(timestamp)
                 returnResponse['blockTimestamp'] = dt_object.strftime("%Y-%m-%d %H:%M:%S")
             else:
                 returnResponse['blockTimestamp'] = "N/A"
-
-        print(returnResponse)
         if response.status_code == 200:
             return jsonify(returnResponse)
         else:
