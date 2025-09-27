@@ -38,6 +38,9 @@ export interface StoredData {
     lastUpdated: Date;
 }
 
+// Export API types for use in components
+export type { VulnerabilityApiResponse, VulnerabilityWithStatus, VulnerabilityStatus, ApiError } from './api';
+
 export interface FilterState {
     priorityScore?: number[];
     category?: string[];

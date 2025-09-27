@@ -8,13 +8,12 @@ import { CriticalNotifications } from "@/components/dashboard/critical-notificat
 import { RouteGuard } from "@/components/auth/route-guard";
 import { LoadingSkeleton } from "@/components/ui/loading-skeleton";
 import { PerformanceMonitor } from "@/components/ui/performance-monitor";
-import { FilterState, PaginationState } from "@/types";
+import { FilterState, PaginationState, VulnerabilityAlert } from "@/types";
 import { showToast, vulnerabilityToasts } from "@/lib/toast";
 import { analytics, trackingEvents } from "@/lib/analytics";
-import {
-  DUMMY_VULNERABILITIES,
-  VulnerabilityDataService,
-} from "@/lib/vulnerability-data";
+import { VulnerabilityDataService } from "@/lib/vulnerability-data";
+import { VulnerabilityApiService } from "@/lib/vulnerability-api";
+import { ContractStorage } from "@/lib/contract-storage";
 
 export default function DashboardPage() {
   const [filters, setFilters] = useState<FilterState>({});
@@ -27,8 +26,46 @@ export default function DashboardPage() {
   const [isFiltersCollapsed, setIsFiltersCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [vulnerabilityData, setVulnerabilityData] = useState<
+    VulnerabilityAlert[]
+  >([]);
+  const [activeContractAddress, setActiveContractAddress] = useState<
+    string | null
+  >(null);
 
-  // Simulate loading state with error handling
+  // Function to refresh data
+  const refreshData = async () => {
+    if (!activeContractAddress) return;
+
+    try {
+      setIsLoading(true);
+      const apiData = await VulnerabilityApiService.queryVulnerabilities(
+        activeContractAddress
+      );
+      const transformedData =
+        VulnerabilityApiService.transformToVulnerabilityAlert(apiData);
+      setVulnerabilityData(transformedData);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error refreshing data:", error);
+      setIsLoading(false);
+    }
+  };
+
+  // Handle status changes from the vulnerability table
+  const handleStatusChange = (
+    vulnerabilityId: string,
+    newStatus: "new" | "acknowledged" | "resolved"
+  ) => {
+    // Update the local state to reflect the change immediately
+    setVulnerabilityData((prev) =>
+      prev.map((vuln) =>
+        vuln.id === vulnerabilityId ? { ...vuln, status: newStatus } : vuln
+      )
+    );
+  };
+
+  // Load vulnerability data from API
   useEffect(() => {
     const loadData = async () => {
       const startTime = performance.now();
@@ -40,26 +77,58 @@ export default function DashboardPage() {
         // Track page view
         analytics.trackPageView("/dashboard");
 
-        // Simulate API call delay
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Get active contract from storage
+        const activeContract = ContractStorage.getActiveContract();
+        if (!activeContract) {
+          throw new Error(
+            "No active contract found. Please add a contract to monitor."
+          );
+        }
 
-        // In a real app, you'd fetch data here
-        // const data = await fetchVulnerabilityData();
+        setActiveContractAddress(activeContract.address);
+
+        // Fetch vulnerability data from API
+        const apiData = await VulnerabilityApiService.queryVulnerabilities(
+          activeContract.address
+        );
+        const transformedData =
+          VulnerabilityApiService.transformToVulnerabilityAlert(apiData);
+
+        setVulnerabilityData(transformedData);
 
         const loadTime = performance.now() - startTime;
         analytics.trackPerformance({ loadTime });
 
         setIsLoading(false);
+
+        // Show success toast if vulnerabilities found
+        if (transformedData.length > 0) {
+          showToast.success(
+            "Data Loaded",
+            `Found ${transformedData.length} vulnerability alert${transformedData.length === 1 ? "" : "s"}`
+          );
+        }
       } catch (err) {
         console.error("Error loading dashboard data:", err);
         const error = err instanceof Error ? err : new Error("Unknown error");
         trackingEvents.errorOccurred(error, "dashboard_load");
-        setError("Failed to load vulnerability data. Please try again.");
+
+        let errorMessage =
+          "Failed to load vulnerability data. Please try again.";
+        if (error.message.includes("No active contract")) {
+          errorMessage =
+            "No active contract found. Please add a contract to monitor.";
+        } else if (
+          error.message.includes("fetch") ||
+          error.message.includes("API Error")
+        ) {
+          errorMessage =
+            "Unable to connect to the vulnerability scanning service. Please check if the service is running.";
+        }
+
+        setError(errorMessage);
         setIsLoading(false);
-        showToast.error(
-          "Loading Error",
-          "Unable to load vulnerability data. Please refresh the page."
-        );
+        showToast.error("Loading Error", errorMessage);
       }
     };
 
@@ -68,8 +137,8 @@ export default function DashboardPage() {
 
   // Apply filters and get filtered data
   const filteredData = useMemo(() => {
-    return VulnerabilityDataService.filterData(DUMMY_VULNERABILITIES, filters);
-  }, [filters]);
+    return VulnerabilityDataService.filterData(vulnerabilityData, filters);
+  }, [vulnerabilityData, filters]);
 
   // Get paginated data
   const paginatedResult = useMemo(() => {
@@ -102,7 +171,7 @@ export default function DashboardPage() {
 
       if (hasFilters) {
         const filteredCount = VulnerabilityDataService.filterData(
-          DUMMY_VULNERABILITIES,
+          vulnerabilityData,
           newFilters
         ).length;
         vulnerabilityToasts.filterApplied(filteredCount);
@@ -209,6 +278,7 @@ export default function DashboardPage() {
               pagination={paginatedResult.pagination}
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
+              onStatusChange={handleStatusChange}
               isLoading={false}
             />
           </div>
