@@ -1,0 +1,52 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "pocHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "pocType",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "metadataURI",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "hederaTx",
+        "type": "string"
+      }
+    ],
+    "name": "VerifiedPoC",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "pocHash", "type": "bytes32" },
+      { "internalType": "string", "name": "pocType", "type": "string" },
+      { "internalType": "address", "name": "target", "type": "address" },
+      { "internalType": "string", "name": "metadataURI", "type": "string" },
+      { "internalType": "string", "name": "hederaTx", "type": "string" }
+    ],
+    "name": "registerPoC",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

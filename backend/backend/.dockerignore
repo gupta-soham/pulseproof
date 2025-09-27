@@ -1,0 +1,9 @@
+.env
+.git
+.gitignore
+README.md
+DEPLOYMENT.md
+__pycache__
+*.pyc
+.DS_Store
+.vscode
