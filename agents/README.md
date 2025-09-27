@@ -22,7 +22,7 @@ External Client <br>
 
 ## How to run
 
-```$ cd /Users/admin/Downloads/PulseProof/agents && ./manage_phase2_agents.sh status```
+```$ cd /agents/risk_assessor && python3.12 -m venv venv```
 
-```$ cd /Users/admin/Downloads/PulseProof/agents && ./manage_phase2_agents.sh start```
+```$ source venv/bin/activate && pip install -r requirements.txt && python phase2_risk_assessor.py```
 

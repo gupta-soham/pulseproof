@@ -10,7 +10,10 @@
 !.yarn/releases
 !.yarn/versions
 
+
 # testing
+.venv
+*.log
 /coverage
 
 # next.js

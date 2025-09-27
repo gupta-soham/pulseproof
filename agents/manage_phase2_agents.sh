@@ -15,6 +15,10 @@ AGENT_NAMES=("orchestrator" "event_analyzer" "risk_assessor")
 AGENT_PORTS=("8001" "8002" "8003")
 AGENT_SCRIPTS=("master_orchestrator/phase2_orchestrator.py" "event_analyzer/phase2_event_analyzer.py" "risk_assessor/phase2_risk_assessor.py")
 AGENT_LOGS=("Phase2Orchestrator" "Phase2EventAnalyzer" "Phase2RiskAssessor")
+AGENT_REQUIREMENTS=("master_orchestrator/requirements.txt" "event_analyzer/requirements.txt" "risk_assessor/requirements.txt")
+
+# Python version to use
+PYTHON_VERSION="python3.12"
 
 get_agent_config() {
     local agent_name=$1
@@ -30,6 +34,111 @@ get_agent_config() {
     return 1
 }
 
+check_python_version() {
+    echo -e "${BLUE}🐍 Checking Python version...${NC}"
+    
+    if command -v $PYTHON_VERSION >/dev/null 2>&1; then
+        local version=$($PYTHON_VERSION --version 2>&1 | cut -d' ' -f2)
+        echo -e "${GREEN}✅ Found $PYTHON_VERSION (version $version)${NC}"
+        return 0
+    else
+        echo -e "${RED}❌ $PYTHON_VERSION not found. Please install Python 3.12${NC}"
+        echo "You can install it using:"
+        echo "  brew install python@3.12"
+        echo "  or download from https://www.python.org/downloads/"
+        return 1
+    fi
+}
+
+setup_virtual_environment() {
+    echo -e "${BLUE}🔧 Setting up virtual environment...${NC}"
+    
+    # Check if venv already exists
+    if [ -d "venv" ]; then
+        echo -e "${YELLOW}⚠️  Virtual environment already exists${NC}"
+        return 0
+    fi
+    
+    # Check Python version
+    if ! check_python_version; then
+        return 1
+    fi
+    
+    # Create virtual environment
+    echo -e "${BLUE}📦 Creating virtual environment with $PYTHON_VERSION...${NC}"
+    if $PYTHON_VERSION -m venv venv; then
+        echo -e "${GREEN}✅ Virtual environment created successfully${NC}"
+    else
+        echo -e "${RED}❌ Failed to create virtual environment${NC}"
+        return 1
+    fi
+    
+    # Activate virtual environment and upgrade pip
+    echo -e "${BLUE}⬆️  Upgrading pip...${NC}"
+    source venv/bin/activate
+    pip install --upgrade pip
+    
+    return 0
+}
+
+install_requirements() {
+    echo -e "${BLUE}📚 Installing requirements for all agents...${NC}"
+    
+    # Activate virtual environment
+    source venv/bin/activate
+    
+    # Install shared requirements first (if any)
+    if [ -f "shared/requirements.txt" ]; then
+        echo -e "${BLUE}📦 Installing shared requirements...${NC}"
+        pip install -r shared/requirements.txt
+    fi
+    
+    # Install requirements for each agent
+    local index=0
+    for agent_name in "${AGENT_NAMES[@]}"; do
+        local requirements_file="${AGENT_REQUIREMENTS[$index]}"
+        if [ -f "$requirements_file" ]; then
+            echo -e "${BLUE}📦 Installing requirements for $agent_name...${NC}"
+            pip install -r "$requirements_file"
+        else
+            echo -e "${YELLOW}⚠️  No requirements file found for $agent_name: $requirements_file${NC}"
+        fi
+        index=$((index + 1))
+    done
+    
+    echo -e "${GREEN}✅ All requirements installed successfully${NC}"
+}
+
+setup_environment() {
+    echo -e "${BLUE}🚀 Setting up Phase 2 environment...${NC}"
+    echo "=================================================="
+    
+    # Create logs directory
+    mkdir -p logs
+    
+    # Setup virtual environment
+    if ! setup_virtual_environment; then
+        echo -e "${RED}❌ Failed to setup virtual environment${NC}"
+        return 1
+    fi
+    
+    # Install requirements
+    if ! install_requirements; then
+        echo -e "${RED}❌ Failed to install requirements${NC}"
+        return 1
+    fi
+    
+    echo -e "${GREEN}🎉 Phase 2 environment setup completed successfully!${NC}"
+    echo ""
+    echo -e "${YELLOW}📋 Environment Summary:${NC}"
+    echo "   Python Version: $($PYTHON_VERSION --version)"
+    echo "   Virtual Environment: venv/"
+    echo "   Logs Directory: logs/"
+    echo "   Agents: ${AGENT_NAMES[*]}"
+    echo ""
+    return 0
+}
+
 show_usage() {
     echo "🤖 PulseProof Phase 2 Multi-Agent System Manager"
     echo "=================================================="
@@ -37,6 +146,7 @@ show_usage() {
     echo "Usage: $0 [COMMAND]"
     echo ""
     echo "Commands:"
+    echo "  setup       Setup virtual environment and install requirements (first run)"
     echo "  start       Start all Phase 2 agents with real communication"
     echo "  stop        Stop all Phase 2 agents"
     echo "  restart     Restart all Phase 2 agents"
@@ -52,6 +162,11 @@ show_usage() {
     echo "  stop-<agent>      Stop specific agent"
     echo "  restart-<agent>   Restart specific agent"
     echo "  status-<agent>    Show specific agent status"
+    echo ""
+    echo "Environment Setup:"
+    echo "  ✅ Automatic Python 3.12 virtual environment creation"
+    echo "  ✅ Requirements installation for all agents"
+    echo "  ✅ First-run setup with setup command"
     echo ""
     echo "Phase 2 Features:"
     echo "  ✅ Real agent communication using ctx.send and ctx.send_and_receive"
@@ -151,6 +266,15 @@ stop_agent() {
 start_all_agents() {
     echo -e "${BLUE}🚀 Starting all Phase 2 agents with real communication...${NC}"
     echo "=================================================="
+    
+    # Check if virtual environment exists
+    if [ ! -d "venv" ]; then
+        echo -e "${YELLOW}⚠️  Virtual environment not found. Running setup first...${NC}"
+        if ! setup_environment; then
+            echo -e "${RED}❌ Failed to setup environment. Please run: $0 setup${NC}"
+            return 1
+        fi
+    fi
     
     # Create logs directory
     mkdir -p logs
@@ -347,6 +471,9 @@ clean_up() {
 
 # Main command handling
 case "$1" in
+    setup)
+        setup_environment
+        ;;
     start)
         start_all_agents
         ;;

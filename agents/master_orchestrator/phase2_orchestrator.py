@@ -36,7 +36,7 @@ from communication_models import (
     AgentError,
     AgentAcknowledgment
 )
-from local_agent_discovery import discovery_service
+# Removed local_agent_discovery dependency - using fixed agent addresses
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -99,30 +99,24 @@ async def startup_handler(ctx: Context):
     ctx.logger.info("📡 Ready to coordinate multi-agent blockchain security analysis with real communication")
 
 async def discover_sub_agents(ctx: Context):
-    """Discover and register sub-agents using local discovery service"""
-    ctx.logger.info("🔍 Discovering sub-agents using local discovery service...")
+    """Register sub-agents using fixed addresses"""
+    ctx.logger.info("🔍 Registering sub-agents with fixed addresses...")
     
-    # Discover Event Analyzer Agent
-    event_analyzer_info = discovery_service.discover_agent("event_analyzer")
-    if event_analyzer_info:
-        agent_state["sub_agents"]["event_analyzer"] = event_analyzer_info["address"]
-        ctx.logger.info(f"✅ Event Analyzer Agent discovered: {event_analyzer_info['name']}")
-        ctx.logger.info(f"   📍 Address: {event_analyzer_info['address']}")
-        ctx.logger.info(f"   🌐 Port: {event_analyzer_info['port']}")
-        ctx.logger.info(f"   🔧 Capabilities: {', '.join(event_analyzer_info['capabilities'])}")
-    else:
-        ctx.logger.error("❌ Event Analyzer Agent not found")
+    # Register Event Analyzer Agent (fixed address)
+    event_analyzer_address = "http://localhost:8002"
+    agent_state["sub_agents"]["event_analyzer"] = event_analyzer_address
+    ctx.logger.info(f"✅ Event Analyzer Agent registered: event_analyzer")
+    ctx.logger.info(f"   📍 Address: {event_analyzer_address}")
+    ctx.logger.info(f"   🌐 Port: 8002")
+    ctx.logger.info(f"   🔧 Capabilities: event_analysis, pattern_detection")
     
-    # Discover Risk Assessor Agent
-    risk_assessor_info = discovery_service.discover_agent("risk_assessor")
-    if risk_assessor_info:
-        agent_state["sub_agents"]["risk_assessor"] = risk_assessor_info["address"]
-        ctx.logger.info(f"✅ Risk Assessor Agent discovered: {risk_assessor_info['name']}")
-        ctx.logger.info(f"   📍 Address: {risk_assessor_info['address']}")
-        ctx.logger.info(f"   🌐 Port: {risk_assessor_info['port']}")
-        ctx.logger.info(f"   🔧 Capabilities: {', '.join(risk_assessor_info['capabilities'])}")
-    else:
-        ctx.logger.error("❌ Risk Assessor Agent not found")
+    # Register Risk Assessor Agent (fixed address)
+    risk_assessor_address = "http://localhost:8003"
+    agent_state["sub_agents"]["risk_assessor"] = risk_assessor_address
+    ctx.logger.info(f"✅ Risk Assessor Agent registered: risk_assessor")
+    ctx.logger.info(f"   📍 Address: {risk_assessor_address}")
+    ctx.logger.info(f"   🌐 Port: 8003")
+    ctx.logger.info(f"   🔧 Capabilities: risk_assessment, vulnerability_analysis")
     
     # Check agent health using real agent communication
     await check_agent_health(ctx)
